@@ -1,6 +1,8 @@
 # soup
 
-Extract the values requested from XML files using **BeautifulSoup**.
+![soup picture](https://github.com/alexandriagroup/soup/raw/master/img/soup.jpg)
+
+Extract the values requested from XML files using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
 
 
 ## Usage
@@ -20,3 +22,20 @@ Extract the values requested from XML files using **BeautifulSoup**.
 - Print all the children in a given tag
 
     soup --children ItemAttributes <file>
+
+
+## Installation
+
+* With [poetry](https://poetry.eustace.io/):
+
+    poetry install
+
+* Manually:
+
+    pip install beautifulsoup4
+    cp soup/core.py <somepath>/soup
+
+
+# Acknowledgement
+
+Photo by Charles Koh on Unsplash.
