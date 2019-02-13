@@ -25,6 +25,8 @@ import bs4
 import re
 
 # TODO Implement optional output format as JSON
+# TODO Show the children of the children with the option --values
+
 
 def check_file_existence(filename):
     if not os.path.exists(filename):
@@ -47,6 +49,15 @@ def show(result):
     else:
         s = ''
     return s
+
+
+def read_file(filename):
+    with open(filename) as f:
+        if args.ignore_case:
+            content = lower_case_all_tags(f.read())
+        else:
+            content = f.read()
+    return content
 
 
 parser = argparse.ArgumentParser()
@@ -77,23 +88,22 @@ if __name__ == '__main__':
         if args.verbose:
             print('> {}'.format(filename))
 
-        with open(filename) as f:
-            if args.ignore_case:
-                content = lower_case_all_tags(f.read())
-            else:
-                content = f.read()
+        soup = bs4.BeautifulSoup(read_file(filename), 'xml')
 
-        soup = bs4.BeautifulSoup(content, 'xml')
-
+        # All the occurrences
         if args.all:
             search = soup.find_all
             print(show(search(args.tagname.split(','))))
+
+        # The children of the tag
         elif args.children:
             element = soup.find(args.tagname)
             if args.values:
                 print('\n'.join(': '.join(( x.name, x.text )) for x in element.children if x.name))
             else:
                 print('\n'.join(x.name for x in element.children if x.name))
+
+        # A single tag
         else:
             search = soup.find
             print(show(search(args.tagname.split(','))))
