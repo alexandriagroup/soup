@@ -61,6 +61,9 @@ parser.add_argument('--all', '-a',
 parser.add_argument('--children', '-c',
                     help='List all the children in the tag',
                     action='store_true')
+parser.add_argument('--values', '-V',
+                    help='Add the values of the children with the --children option',
+                    action='store_true')
 parser.add_argument('--verbose', '-v',
                     help='Verbose mode',
                     action='store_true')
@@ -86,8 +89,11 @@ if __name__ == '__main__':
             search = soup.find_all
             print(show(search(args.tagname.split(','))))
         elif args.children:
-            element =soup.find(args.tagname)
-            print('\n'.join(x.name for x in element.children if x.name))
+            element = soup.find(args.tagname)
+            if args.values:
+                print('\n'.join(': '.join(( x.name, x.text )) for x in element.children if x.name))
+            else:
+                print('\n'.join(x.name for x in element.children if x.name))
         else:
             search = soup.find
             print(show(search(args.tagname.split(','))))
