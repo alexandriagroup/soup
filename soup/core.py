@@ -1,24 +1,5 @@
 #!/usr/bin/env python
 
-"""
-Extract the values requested from the XML files using BeautifulSoup (bs4)
-
-Example:
-
-- Print the text for the first node ASIN in one file
-soup 'ASIN' <file>
-
-- Print the texts for all the nodes ASIN in one file
-soup --all 'ASIN' <file>
-
-- Print the texts for multiple nodes in one file
-soup --all 'ASIN','created_at' <file>
-
-- Print all the children in a given tag
-soup --children ItemAttributes <file>
-
-"""
-
 import argparse
 import os
 import bs4
@@ -66,9 +47,6 @@ parser.add_argument('filename', help='The XML file', nargs='+')
 parser.add_argument('--ignore-case', '-i',
                     help='Ignore the case of the tags in the XML FILE',
                     action='store_true')
-parser.add_argument('--all', '-a',
-                    help='Take into account all the occurrences in the file',
-                    action='store_true')
 parser.add_argument('--children', '-c',
                     help='List all the children in the tag',
                     action='store_true')
@@ -90,20 +68,14 @@ if __name__ == '__main__':
 
         soup = bs4.BeautifulSoup(read_file(filename), 'xml')
 
-        # All the occurrences
-        if args.all:
-            search = soup.find_all
-            print(show(search(args.tagname.split(','))))
-
         # The children of the tag
-        elif args.children:
+        if args.children:
             element = soup.find(args.tagname)
             if args.values:
                 print('\n'.join(': '.join(( x.name, x.text )) for x in element.children if x.name))
             else:
                 print('\n'.join(x.name for x in element.children if x.name))
 
-        # A single tag
+        # All the occurrences
         else:
-            search = soup.find
-            print(show(search(args.tagname.split(','))))
+            print(show(soup.find_all(args.tagname.split(','))))

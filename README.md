@@ -6,21 +6,21 @@ Extract the values requested from XML files using [BeautifulSoup](https://www.cr
 
 ## Usage
 
-- Print the text for the first node ASIN in one file
+- Print the text for all the nodes ASIN
 
-        soup 'ASIN' <file>
+        soup 'ASIN' <file1> [<file2> ...]
 
-- Print the texts for all the nodes ASIN in one file
+- Print the text for multiple nodes
 
-        soup --all 'ASIN' <file>
-
-- Print the texts for multiple nodes in one file
-
-        soup --all 'ASIN','created_at' <file>
+        soup 'ASIN','created_at' <file1> [<file2> ...]
 
 - Print all the children in a given tag
 
-        soup --children ItemAttributes <file>
+        soup --children ItemAttributes <file> [<file2> ...]
+
+- Print all the children and their values
+
+        soup --children --values ItemAttributes <file> [<file2> ...]
 
 
 ## Installation
